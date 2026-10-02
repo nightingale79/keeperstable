@@ -1,0 +1,22 @@
+# Render.com Blueprint — deploys The Keeper's Table with a persistent disk
+# so your accounts and campaigns are never lost. See README.md for the
+# click-by-click walkthrough.
+services:
+  - type: web
+    name: keepers-table
+    runtime: node
+    plan: starter          # persistent disks require a paid instance (~$7/mo)
+    buildCommand: npm install
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: SESSION_SECRET
+        generateValue: true   # Render generates a strong secret for you
+    disk:
+      name: keepers-data
+      mountPath: /var/data
+      sizeGB: 1
